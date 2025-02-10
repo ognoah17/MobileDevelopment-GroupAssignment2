@@ -19,11 +19,18 @@ export default function Home() {
       {/* ✅ Welcome Message */}
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeText}>Welcome to My New App</Text>
-        <Button title="Sign Out" onPress={() => setIsSignedIn(false)} /> {/* ✅ Logout Button */}
+        <Button title="Sign Out" onPress={() => setIsSignedIn(false)} />
       </View>
 
-      {/* ✅ Bottom Tab Navigation */}
-      <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="Calgary">
+      {/* ✅ Bottom Tab Navigation with FIXED HEADER */}
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false, // ✅ Hides the tab screen title
+          tabBarActiveTintColor: "blue",
+          tabBarInactiveTintColor: "gray",
+        }}
+        initialRouteName="Calgary"
+      >
         <Tab.Screen
           name="Calgary"
           children={() => (
@@ -44,22 +51,22 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#121212", // Dark Grey background for consistency
+    backgroundColor: "#121212",
     paddingTop: 20,
   },
   welcomeContainer: {
-    backgroundColor: "#333333", // Slightly lighter grey for contrast
+    backgroundColor: "#333333",
     paddingVertical: 15,
     paddingHorizontal: 20,
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 1,
-    borderColor: "#444444", // Medium grey border
+    borderColor: "#444444",
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#FFFFFF", // White text
+    color: "#FFFFFF",
   },
 });

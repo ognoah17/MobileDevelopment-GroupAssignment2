@@ -1,39 +1,76 @@
+//Jacobs Version 17:26 09-02-2025
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
 import { useRouter } from "expo-router";
+import credentialsData from "../../credentials.json"; // ✅ Import JSON
 
-const SignIn = () => {
+// ✅ Define Type for User Credentials
+interface User {
+  username: string;
+  password: string;
+}
+
+// ✅ Ensure correct type for imported JSON data
+const users: User[] = credentialsData.users; // ✅ Access "users" array properly
+
+interface SignInProps {
+  onSignIn: () => void;
+}
+
+const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-  const validateInputs = () => {
-    const validUsername = username.length >= 5;
-    const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+  // ✅ Regex validation
+  const isValidUsername = (uname: string) => uname.length >= 5;
+  const isValidPassword = (pass: string) =>
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pass);
 
-    if (!validUsername) {
-      alert("Username must be at least 5 characters.");
-      return false;
+  // ✅ Check credentials against JSON file
+  const authenticateUser = () => {
+    if (!isValidUsername(username)) {
+      Alert.alert("Error", "Username must be at least 5 characters long.");
+      return;
     }
-    if (!validPassword) {
-      alert("Password must have 8+ characters, uppercase, lowercase, number, and special character.");
-      return false;
+    if (!isValidPassword(password)) {
+      Alert.alert(
+        "Error",
+        "Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character."
+      );
+      return;
     }
-    return true;
-  };
 
-  const handleSignIn = () => {
-    if (validateInputs()) {
-      router.push("/home");
+    // ✅ Properly check the "users" array from JSON
+    const user = users.find((cred) => cred.username === username && cred.password === password);
+
+    if (!user) {
+      Alert.alert("Error", "Invalid username or password.");
+      return;
     }
+
+    // ✅ Successful sign-in
+    onSignIn();
+    router.push("/home"); // Navigate to home screen
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
-      <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={setUsername} />
-      <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry />
-      <Button title="Sign In" onPress={handleSignIn} />
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Button title="Sign In" onPress={authenticateUser} />
     </View>
   );
 };
@@ -53,6 +90,7 @@ const styles = StyleSheet.create({
     margin: 6,
     borderWidth: 1,
     borderRadius: 10,
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 30,

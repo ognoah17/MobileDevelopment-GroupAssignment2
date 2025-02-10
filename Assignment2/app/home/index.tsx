@@ -1,16 +1,25 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CityScreen from "./CityScreen";
+import SignIn from "../auth/SignIn"; // ✅ Ensure correct import path
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); // ✅ Manage authentication state
+
+  // ✅ Show the Sign-In screen when not signed in
+  if (!isSignedIn) {
+    return <SignIn onSignIn={() => setIsSignedIn(true)} />;
+  }
+
   return (
     <View style={styles.container}>
       {/* ✅ Welcome Message */}
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeText}>Welcome to My New App</Text>
+        <Button title="Sign Out" onPress={() => setIsSignedIn(false)} /> {/* ✅ Logout Button */}
       </View>
 
       {/* ✅ Bottom Tab Navigation */}

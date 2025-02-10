@@ -34,7 +34,6 @@ export default function CityScreen({ city, link }: CityScreenProps) {
           description={cityData[city as keyof typeof cityData].description}
         />
 
-        {/* ✅ City Link Component */}
         <CityLink link={link} />
       </View>
     </ScrollView>

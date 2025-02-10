@@ -12,7 +12,6 @@ export default function CityInfo({ city, image, description }: CityInfoProps) {
     <View style={styles.container}>
       <Text style={styles.title}>{city}</Text>
       <Image source={image} style={styles.image} />
-      {/* ✅ Ensure description is inside <Text> */}
       <Text style={styles.description}>{description}</Text>
     </View>
   );

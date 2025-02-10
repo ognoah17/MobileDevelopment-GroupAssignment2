@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CityScreen from "./CityScreen";
-import SignIn from "../auth/SignIn"; // ✅ Ensure correct import path
+import SignIn from "../auth/SignIn"; 
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); // ✅ Manage authentication state
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); 
 
   // ✅ Show the Sign-In screen when not signed in
   if (!isSignedIn) {
@@ -16,16 +16,14 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      {/* ✅ Welcome Message */}
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeText}>Welcome to My New App</Text>
         <Button title="Sign Out" onPress={() => setIsSignedIn(false)} />
       </View>
 
-      {/* ✅ Bottom Tab Navigation with FIXED HEADER */}
       <Tab.Navigator
         screenOptions={{
-          headerShown: false, // ✅ Hides the tab screen title
+          headerShown: false,
           tabBarActiveTintColor: "blue",
           tabBarInactiveTintColor: "gray",
         }}

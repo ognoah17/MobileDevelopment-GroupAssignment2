@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CityScreen from "./CityScreen";
-import SignIn from "../auth/SignIn"; 
+import SignIn from "../auth/SignIn";
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); 
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
-  // ✅ Show the Sign-In screen when not signed in
   if (!isSignedIn) {
-    return <SignIn onSignIn={() => setIsSignedIn(true)} />;
+    // If not signed in, show the SignIn component and pass onSignIn
+    return (
+      <SignIn
+        onSignIn={() => {
+          setIsSignedIn(true);
+        }}
+      />
+    );
   }
 
+  // If signed in, show the home screen with the Tab Navigator
   return (
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>

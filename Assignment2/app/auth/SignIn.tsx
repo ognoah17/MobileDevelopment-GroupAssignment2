@@ -1,17 +1,15 @@
-//Jacobs Version 09:44 10-02-2025
-import { useState } from "react";
+// Jacobs Version 09:44 10-02-2025
+import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import credentialsData from "../../credentials.json";
-
 
 interface User {
   username: string;
   password: string;
 }
 
-
-const users: User[] = credentialsData.users; 
+const users: User[] = credentialsData.users;
 
 interface SignInProps {
   onSignIn: () => void;
@@ -22,17 +20,16 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-
-  const isValidUsername = (uname: string) => uname.length >= 5;
-  const isValidPassword = (pass: string) =>
+  const isValidUsername = (uname: string): boolean => uname.length >= 5;
+  const isValidPassword = (pass: string): boolean =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pass);
 
- 
   const authenticateUser = () => {
     if (!isValidUsername(username)) {
       Alert.alert("Error", "Username must be at least 5 characters long.");
       return;
     }
+
     if (!isValidPassword(password)) {
       Alert.alert(
         "Error",
@@ -41,17 +38,17 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
       return;
     }
 
-
-    const user = users.find((cred) => cred.username === username && cred.password === password);
+    const user = users.find(
+      (cred) => cred.username === username && cred.password === password
+    );
 
     if (!user) {
       Alert.alert("Error", "Invalid username or password.");
       return;
     }
 
-
     onSignIn();
-    router.push("/home"); 
+    router.push("/home");
   };
 
   return (
@@ -62,6 +59,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}

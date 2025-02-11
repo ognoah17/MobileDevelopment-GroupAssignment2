@@ -12,12 +12,7 @@ interface User {
 // Load array of users from the credentials.json file (Not secure for production).
 const users: User[] = credentialsData.users;
 
-interface SignInProps {
-  // Callback function to execute on successful authentication.
-  onSignIn: () => void;
-}
-
-const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
+const SignIn: React.FC = () => {
   // State variables to store user input.
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -28,7 +23,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
 
   // Validate password complexity (at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char).
   const isValidPassword = (pass: string): boolean =>
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pass);
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(pass);
 
   // Function to authenticate user credentials.
   const authenticateUser = () => {
@@ -58,8 +53,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
       return;
     }
 
-    // On successful authentication, invoke callback and navigate to home screen.
-    onSignIn();
+    // On successful authentication, navigate to home screen.
     router.push("/home");
   };
 

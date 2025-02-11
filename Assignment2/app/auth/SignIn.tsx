@@ -2,34 +2,43 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
 import { useRouter } from "expo-router";
-import credentialsData from "../../credentials.json";
+import credentialsData from "../../credentials.json"; // Import user credentials (for local testing only)
 
 interface User {
   username: string;
   password: string;
 }
 
+// Load array of users from the credentials.json file (Not secure for production).
 const users: User[] = credentialsData.users;
 
 interface SignInProps {
+  // Callback function to execute on successful authentication.
   onSignIn: () => void;
 }
 
 const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
+  // State variables to store user input.
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const router = useRouter();
+  const router = useRouter(); // Router for navigation
 
+  // Validate username length (must be at least 5 characters).
   const isValidUsername = (uname: string): boolean => uname.length >= 5;
+
+  // Validate password complexity (at least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char).
   const isValidPassword = (pass: string): boolean =>
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(pass);
 
+  // Function to authenticate user credentials.
   const authenticateUser = () => {
+    // Check username validity.
     if (!isValidUsername(username)) {
       Alert.alert("Error", "Username must be at least 5 characters long.");
       return;
     }
 
+    // Check password validity.
     if (!isValidPassword(password)) {
       Alert.alert(
         "Error",
@@ -38,15 +47,18 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
       return;
     }
 
+    // Attempt to find the user in the credentials list.
     const user = users.find(
       (cred) => cred.username === username && cred.password === password
     );
 
     if (!user) {
+      // Alert user if authentication fails.
       Alert.alert("Error", "Invalid username or password.");
       return;
     }
 
+    // On successful authentication, invoke callback and navigate to home screen.
     onSignIn();
     router.push("/home");
   };
@@ -54,6 +66,8 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
+
+      {/* Username Input Field */}
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -61,6 +75,8 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
         onChangeText={setUsername}
         autoCapitalize="none"
       />
+
+      {/* Password Input Field */}
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -68,6 +84,8 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
+
+      {/* Sign In Button */}
       <Button title="Sign In" onPress={authenticateUser} />
     </View>
   );
@@ -75,6 +93,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn }) => {
 
 export default SignIn;
 
+// Styles for the component.
 const styles = StyleSheet.create({
   container: {
     flex: 1,

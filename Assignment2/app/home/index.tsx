@@ -1,41 +1,18 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CityScreen from "./CityScreen";
-import SignIn from "../auth/SignIn";
 
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
-  if (!isSignedIn) {
-    // If not signed in, show the SignIn component and pass onSignIn
-    return (
-      <SignIn
-        onSignIn={() => {
-          setIsSignedIn(true);
-        }}
-      />
-    );
-  }
-
-  // If signed in, show the home screen with the Tab Navigator
   return (
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeText}>Welcome to My New App</Text>
-        <Button title="Sign Out" onPress={() => setIsSignedIn(false)} />
       </View>
 
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarActiveTintColor: "blue",
-          tabBarInactiveTintColor: "gray",
-        }}
-        initialRouteName="Calgary"
-      >
+      <Tab.Navigator screenOptions={{ headerShown: false }} initialRouteName="Calgary">
         <Tab.Screen
           name="Calgary"
           children={() => (
@@ -56,22 +33,22 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#121212",
+    backgroundColor: "#121212", // Dark Grey background for consistency
     paddingTop: 20,
   },
   welcomeContainer: {
-    backgroundColor: "#333333",
+    backgroundColor: "#333333", // Slightly lighter grey for contrast
     paddingVertical: 15,
     paddingHorizontal: 20,
     alignItems: "center",
     justifyContent: "center",
     borderBottomWidth: 1,
-    borderColor: "#444444",
+    borderColor: "#444444", // Medium grey border
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#FFFFFF",
+    color: "#FFFFFF", // White text
   },
 });

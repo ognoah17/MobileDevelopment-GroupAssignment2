@@ -1,14 +1,17 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
+// Define the props for the CityInfo component
 interface CityInfoProps {
   city: string;
   image: any;
   description: string;
 }
 
+// CityInfo component
 export default function CityInfo({ city, image, description }: CityInfoProps) {
   return (
+    // Container for the city information
     <View style={styles.container}>
       <Text style={styles.title}>{city}</Text>
       <Image source={image} style={styles.image} />
@@ -17,6 +20,7 @@ export default function CityInfo({ city, image, description }: CityInfoProps) {
   );
 }
 
+// Styles for the CityInfo component
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
